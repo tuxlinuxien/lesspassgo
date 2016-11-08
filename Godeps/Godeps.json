@@ -1,11 +1,16 @@
 {
-	"ImportPath": "test",
+	"ImportPath": "github.com/tuxlinuxien/lesspassgo",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v74",
 	"Packages": [
 		"./..."
 	],
 	"Deps": [
+		{
+			"ImportPath": "github.com/urfave/cli",
+			"Comment": "v1.18.0-86-gd86a009",
+			"Rev": "d86a009f5e13f83df65d0d6cee9a2e3f1445f0da"
+		},
 		{
 			"ImportPath": "golang.org/x/crypto/pbkdf2",
 			"Rev": "351dc6a5bf92a5f2ae22fadeee08eb6a45aa2d93"
