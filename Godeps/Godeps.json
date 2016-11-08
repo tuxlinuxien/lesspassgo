@@ -1,0 +1,14 @@
+{
+	"ImportPath": "test",
+	"GoVersion": "go1.7",
+	"GodepVersion": "v74",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "golang.org/x/crypto/pbkdf2",
+			"Rev": "351dc6a5bf92a5f2ae22fadeee08eb6a45aa2d93"
+		}
+	]
+}
