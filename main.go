@@ -1,14 +1,13 @@
 package main
 
 import (
+	"crypto/hmac"
 	"crypto/sha256"
-	"flag"
 	"fmt"
 	"os"
 	"strconv"
 
-	"crypto/hmac"
-
+	"github.com/urfave/cli"
 	"golang.org/x/crypto/pbkdf2"
 )
 
@@ -69,34 +68,71 @@ func prettyPrint(hash []byte, template string) string {
 }
 
 func main() {
-	login := flag.String("login", "", "login")
-	masterPassword := flag.String("password", "", "password")
-	site := flag.String("site", "", "domain.com")
-	length := flag.Int("length", 12, "generated password length")
-	counter := flag.Int("counter", 1, "counter")
-	lower := flag.Bool("l", false, "password contains [a-z]")
-	upper := flag.Bool("u", false, "password contains [A-Z]")
-	numeric := flag.Bool("n", false, "password contains [0-9]")
-	special := flag.Bool("s", false, "password contains @&%?,=[]_:-+*$#!'^~;()/.")
-	flag.Parse()
+	app := cli.NewApp()
+	app.Name = "lesspassgo"
+	app.Usage = "LessPass password generator CLI."
+	app.UsageText = "lesspassgo <site> <login> <masterPassword> [options]"
+	app.HideVersion = true
+	app.Author = "Yoann Cerda"
+	app.Email = "tuxlinuxien@gmail.com"
+	app.EnableBashCompletion = true
+	app.Flags = []cli.Flag{
+		cli.Int64Flag{
+			Name:  "counter, c",
+			Value: 1,
+		},
+		cli.Int64Flag{
+			Name:  "length, L",
+			Value: 12,
+		},
+		cli.BoolFlag{
+			Name: "upper, u",
+		},
+		cli.BoolFlag{
+			Name: "lower, l",
+		},
+		cli.BoolFlag{
+			Name: "numbers, n",
+		},
+		cli.BoolFlag{
+			Name: "symbols, s",
+		},
+	}
 
-	var template = ""
-	if *lower == true {
-		template += "vc"
+	app.Action = func(ctx *cli.Context) error {
+		fmt.Println(ctx.NArg())
+		return nil
 	}
-	if *upper == true {
-		template += "VC"
-	}
-	if *numeric == true {
-		template += "n"
-	}
-	if *special == true {
-		template += "s"
-	}
-	if template == "" {
-		fmt.Println("You need to define a password format")
-		os.Exit(-1)
-	}
-	encLogin := encryptLogin(*login, *masterPassword)
-	fmt.Println(renderPassword(encLogin, *site, *length, *counter, template))
+	app.Run(os.Args)
+
+	// login := flag.String("login", "", "login")
+	// masterPassword := flag.String("password", "", "password")
+	// site := flag.String("site", "", "domain.com")
+	// length := flag.Int("length", 12, "generated password length")
+	// counter := flag.Int("counter", 1, "counter")
+	// lower := flag.Bool("l", false, "password contains [a-z]")
+	// upper := flag.Bool("u", false, "password contains [A-Z]")
+	// numeric := flag.Bool("n", false, "password contains [0-9]")
+	// special := flag.Bool("s", false, "password contains @&%?,=[]_:-+*$#!'^~;()/.")
+	// flag.Parse()
+	//
+	// var template = ""
+	// if *lower == true {
+	// 	template += "vc"
+	// }
+	// if *upper == true {
+	// 	template += "VC"
+	// }
+	// if *numeric == true {
+	// 	template += "n"
+	// }
+	// if *special == true {
+	// 	template += "s"
+	// }
+	// if template == "" {
+	// 	fmt.Println("You need to define a password format")
+	// 	os.Exit(-1)
+	// }
+	// encLogin := encryptLogin(*login, *masterPassword)
+	// fmt.Println(renderPassword(encLogin, *site, *length, *counter, template))
 }
