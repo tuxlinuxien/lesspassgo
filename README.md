@@ -1,7 +1,7 @@
 LessPassGo
 ==========
 
-Password generator implemented in Go based on [LessPass](github.com/lesspass/cli).
+Password generator implemented in Go based on [LessPass](//github.com/lesspass/cli).
 
 ## Install
 
