@@ -1,4 +1,9 @@
 language: go
 
+branches:
+    only:
+        - master
+        - dev
+
 install:
     go get github.com/tuxlinuxien/lesspassgo
