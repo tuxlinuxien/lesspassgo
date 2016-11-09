@@ -16,7 +16,7 @@ NAME:
    lesspassgo - LessPass password generator CLI.
 
 USAGE:
-   lesspassgo <site> <login> <masterPassword> [options]
+   lesspassgo [options]
 
 AUTHOR:
    Yoann Cerda <tuxlinuxien@gmail.com>
@@ -25,6 +25,9 @@ COMMANDS:
      help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
+   --site value               
+   --login value              
+   --password value           
    --counter value, -c value  (default: 1)
    --length value, -L value   (default: 12)
    --upper, -u                
