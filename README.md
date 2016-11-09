@@ -6,7 +6,7 @@ Password generator implemented in Go based on [LessPass](//github.com/lesspass/c
 ## Install
 
 ```
-$ go get -u github.com/tuxlinuxien/lespassgo
+$ go get -u github.com/tuxlinuxien/lesspassgo
 ```
 
 ## Usage
