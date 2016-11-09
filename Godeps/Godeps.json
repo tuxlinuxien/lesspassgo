@@ -7,6 +7,10 @@
 	],
 	"Deps": [
 		{
+			"ImportPath": "github.com/howeyc/gopass",
+			"Rev": "f5387c492211eb133053880d23dfae62aa14123d"
+		},
+		{
 			"ImportPath": "github.com/urfave/cli",
 			"Comment": "v1.18.0-86-gd86a009",
 			"Rev": "d86a009f5e13f83df65d0d6cee9a2e3f1445f0da"
@@ -14,6 +18,14 @@
 		{
 			"ImportPath": "golang.org/x/crypto/pbkdf2",
 			"Rev": "351dc6a5bf92a5f2ae22fadeee08eb6a45aa2d93"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ssh/terminal",
+			"Rev": "351dc6a5bf92a5f2ae22fadeee08eb6a45aa2d93"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "a646d33e2ee3172a661fc09bca23bb4889a41bc8"
 		}
 	]
 }

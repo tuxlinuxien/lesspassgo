@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/howeyc/gopass"
 	"github.com/tuxlinuxien/lesspassgo/core"
 	"github.com/urfave/cli"
 )
@@ -13,12 +14,21 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "lesspassgo"
 	app.Usage = "LessPass password generator CLI."
-	app.UsageText = "lesspassgo <site> <login> <masterPassword> [options]"
+	app.UsageText = "lesspassgo [options]"
 	app.HideVersion = true
 	app.Author = "Yoann Cerda"
 	app.Email = "tuxlinuxien@gmail.com"
 	app.EnableBashCompletion = true
 	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name: "site",
+		},
+		cli.StringFlag{
+			Name: "login",
+		},
+		cli.StringFlag{
+			Name: "password",
+		},
 		cli.IntFlag{
 			Name:  "counter, c",
 			Value: 1,
@@ -41,13 +51,25 @@ func main() {
 		},
 	}
 
-	var args = make([]string, 0)
 	app.Action = func(ctx *cli.Context) error {
-		site := args[0]
-		login := args[1]
-		masterPassword := args[2]
+		site := ctx.String("site")
+		login := ctx.String("login")
+		masterPassword := ctx.String("password")
 		counter := ctx.Int("counter")
 		length := ctx.Int("length")
+		if site == "" {
+			fmt.Printf("site: ")
+			fmt.Scan(&site)
+		}
+		if login == "" {
+			fmt.Printf("login: ")
+			fmt.Scan(&site)
+		}
+		if masterPassword == "" {
+			fmt.Printf("master password: ")
+			masterPasswordBytes, _ := gopass.GetPasswd()
+			masterPassword = string(masterPasswordBytes)
+		}
 		var template = ""
 		if ctx.Bool("lower") {
 			template += "vc"
@@ -68,16 +90,5 @@ func main() {
 		fmt.Println(core.RenderPassword(encLogin, site, length, counter, template))
 		return nil
 	}
-	if len(os.Args) < 4 {
-		app.Run([]string{"", "-h"})
-		return
-	}
-	for i := 1; i < 4 && i < len(os.Args); i++ {
-		args = append(args, os.Args[i])
-	}
-	var flags = []string{"lesspassgo"}
-	for i := 4; i < len(os.Args); i++ {
-		flags = append(flags, os.Args[i])
-	}
-	app.Run(flags)
+	app.Run(os.Args)
 }
