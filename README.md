@@ -1,5 +1,4 @@
-LessPassGo [![Build Status](https://travis-ci.org/tuxlinuxien/lesspassgo.svg?branch=master)](https://travis-ci.org/tuxlinuxien/lesspassgo) [![GoDoc](https://godoc.org/github.com/tuxlinuxien/lesspassgo?status.svg)](https://godoc.org/github.com/tuxlinuxien/lesspassgo) 
-[![Go Report Card](https://goreportcard.com/badge/tuxlinuxien/lesspassgo)](https://goreportcard.com/report/github.com/tuxlinuxien/lesspassgo)
+LessPassGo [![Build Status](https://travis-ci.org/tuxlinuxien/lesspassgo.svg?branch=master)](https://travis-ci.org/tuxlinuxien/lesspassgo) [![GoDoc](https://godoc.org/github.com/tuxlinuxien/lesspassgo?status.svg)](https://godoc.org/github.com/tuxlinuxien/lesspassgo) [![Go Report Card](https://goreportcard.com/badge/tuxlinuxien/lesspassgo)](https://goreportcard.com/report/github.com/tuxlinuxien/lesspassgo)
 ==========
 
 Password generator implemented in Go based on [LessPass](//github.com/lesspass/cli).
