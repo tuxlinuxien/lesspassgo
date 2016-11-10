@@ -1,3 +1,4 @@
+// Package core provides core functions to build LessPass password.
 package core
 
 import (
