@@ -67,7 +67,7 @@ func main() {
 		}
 		if login == "" {
 			fmt.Printf("login: ")
-			fmt.Scan(&site)
+			fmt.Scan(&login)
 		}
 		if masterPassword == "" {
 			fmt.Printf("master password: ")
