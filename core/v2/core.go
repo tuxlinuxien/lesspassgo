@@ -23,7 +23,7 @@ var (
 	}
 )
 
-// PasswordProfile .
+// PasswordProfile structure that contains password options.
 type PasswordProfile struct {
 	Keylen     int
 	Iterations int
