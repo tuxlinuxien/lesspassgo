@@ -39,7 +39,7 @@ func NewPasswordProfile() *PasswordProfile {
 		keylen,
 		iterations,
 		1,
-		12,
+		16,
 		"sha256",
 		[]string{},
 	}

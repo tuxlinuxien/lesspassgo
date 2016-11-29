@@ -36,7 +36,7 @@ func main() {
 		},
 		cli.IntFlag{
 			Name:  "length, L",
-			Value: 12,
+			Value: 16,
 		},
 		cli.BoolFlag{
 			Name: "version1, v1",
@@ -50,7 +50,7 @@ func main() {
 		cli.BoolTFlag{
 			Name: "numbers, n",
 		},
-		cli.BoolFlag{
+		cli.BoolTFlag{
 			Name: "symbols, s",
 		},
 	}
