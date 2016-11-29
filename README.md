@@ -3,6 +3,8 @@ LessPassGo [![Build Status](https://travis-ci.org/tuxlinuxien/lesspassgo.svg?bra
 
 Password generator implemented in Go based on [LessPass](//github.com/lesspass/cli).
 
+Now support v1 and v2 generation.
+
 ## Install
 
 ```
@@ -30,6 +32,7 @@ GLOBAL OPTIONS:
    --password value           
    --counter value, -c value  (default: 1)
    --length value, -L value   (default: 12)
+   --version1, --v1           
    --upper, -u                
    --lower, -l                
    --numbers, -n              

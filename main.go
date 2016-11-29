@@ -7,6 +7,7 @@ import (
 
 	"github.com/howeyc/gopass"
 	CoreV1 "github.com/tuxlinuxien/lesspassgo/core/v1"
+	CoreV2 "github.com/tuxlinuxien/lesspassgo/core/v2"
 	"github.com/urfave/cli"
 )
 
@@ -36,6 +37,9 @@ func main() {
 		cli.IntFlag{
 			Name:  "length, L",
 			Value: 12,
+		},
+		cli.BoolFlag{
+			Name: "version1, v1",
 		},
 		cli.BoolTFlag{
 			Name: "upper, u",
@@ -70,24 +74,43 @@ func main() {
 			masterPasswordBytes, _ := gopass.GetPasswd()
 			masterPassword = string(masterPasswordBytes)
 		}
-		var template = ""
-		if ctx.Bool("lower") {
-			template += "vc"
+		if ctx.Bool("version1") {
+			var template = ""
+			if ctx.Bool("lower") {
+				template += "vc"
+			}
+			if ctx.Bool("upper") {
+				template += "VC"
+			}
+			if ctx.Bool("numbers") {
+				template += "n"
+			}
+			if ctx.Bool("symbols") {
+				template += "s"
+			}
+			if template == "" {
+				return errors.New("At least one of -l -u -n -s required.")
+			}
+			encLogin := CoreV1.EncryptLogin(login, masterPassword)
+			fmt.Println(CoreV1.RenderPassword(encLogin, site, length, counter, template))
+		} else {
+			pp := CoreV2.NewPasswordProfile()
+			if ctx.Bool("lower") {
+				pp.Rules = append(pp.Rules, "lowercase")
+			}
+			if ctx.Bool("upper") {
+				pp.Rules = append(pp.Rules, "uppercase")
+			}
+			if ctx.Bool("numbers") {
+				pp.Rules = append(pp.Rules, "numbers")
+			}
+			if ctx.Bool("symbols") {
+				pp.Rules = append(pp.Rules, "symbols")
+			}
+			pp.Length = length
+			pp.Counter = counter
+			fmt.Println(CoreV2.GeneratePassword(site, login, masterPassword, pp))
 		}
-		if ctx.Bool("upper") {
-			template += "VC"
-		}
-		if ctx.Bool("numbers") {
-			template += "n"
-		}
-		if ctx.Bool("symbols") {
-			template += "s"
-		}
-		if template == "" {
-			return errors.New("At least one of -l -u -n -s required.")
-		}
-		encLogin := CoreV1.EncryptLogin(login, masterPassword)
-		fmt.Println(CoreV1.RenderPassword(encLogin, site, length, counter, template))
 		return nil
 	}
 	app.Run(os.Args)
