@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/howeyc/gopass"
-	"github.com/tuxlinuxien/lesspassgo/core"
+	CoreV1 "github.com/tuxlinuxien/lesspassgo/core/v1"
 	"github.com/urfave/cli"
 )
 
@@ -86,8 +86,8 @@ func main() {
 		if template == "" {
 			return errors.New("At least one of -l -u -n -s required.")
 		}
-		encLogin := core.EncryptLogin(login, masterPassword)
-		fmt.Println(core.RenderPassword(encLogin, site, length, counter, template))
+		encLogin := CoreV1.EncryptLogin(login, masterPassword)
+		fmt.Println(CoreV1.RenderPassword(encLogin, site, length, counter, template))
 		return nil
 	}
 	app.Run(os.Args)

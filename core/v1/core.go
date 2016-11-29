@@ -1,5 +1,5 @@
-// Package core provides core functions to build LessPass password.
-package core
+// Package v1 provides core functions to build LessPass password.
+package v1
 
 import (
 	"crypto/hmac"
