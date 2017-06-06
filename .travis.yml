@@ -6,4 +6,4 @@ branches:
         - dev
 
 install:
-    go get github.com/tuxlinuxien/lesspassgo
+    go get github.com/tuxlinuxien/lesspassgo/cmd/lesspassgo
