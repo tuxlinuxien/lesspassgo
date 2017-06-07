@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -14,7 +15,14 @@ func registerPost(c echo.Context) error {
 		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
-	c.Bind(&i)
+	if err := c.Bind(&i); err != nil {
+		log.Println(err)
+		return err
+	}
+	if err := CreateUser(i.Email, i.Password); err != nil {
+		log.Println(err)
+		return err
+	}
 	return c.String(http.StatusOK, "")
 }
 
@@ -23,8 +31,18 @@ func authPost(c echo.Context) error {
 		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
-	c.Bind(&i)
-	return c.String(http.StatusOK, "")
+	if err := c.Bind(&i); err != nil {
+		log.Println(err)
+		return err
+	}
+	user, err := AuthUser(i.Email, i.Password)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"token": signUser(user.ID),
+	})
 }
 
 func passwordsPost(c echo.Context) error {
@@ -44,6 +62,8 @@ func passwordsPost(c echo.Context) error {
 }
 
 func show(c echo.Context) error {
+	token := c.Request().Header.Get("authorization")
+	fmt.Println("token:", token)
 	var i interface{}
 	c.Bind(&i)
 	fmt.Println(i)
@@ -52,6 +72,8 @@ func show(c echo.Context) error {
 
 // Start .
 func Start(dbPath string, port int) {
+	openDB(dbPath)
+	createTable()
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())

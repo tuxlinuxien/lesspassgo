@@ -63,6 +63,18 @@
 			"revisionTime": "2017-03-22T23:44:13Z"
 		},
 		{
+			"checksumSHA1": "bkkGN70qZCy8YaN89dqB1fONZJU=",
+			"path": "github.com/mattn/go-sqlite3",
+			"revision": "83772a7051f5e30d8e59746a9e43dfa706b72f3b",
+			"revisionTime": "2017-05-29T14:59:28Z"
+		},
+		{
+			"checksumSHA1": "zmC8/3V4ls53DJlNTKDZwPSC/dA=",
+			"path": "github.com/satori/go.uuid",
+			"revision": "5bf94b69c6b68ee1b541973bb8e1144db23a194b",
+			"revisionTime": "2017-03-21T23:07:31Z"
+		},
+		{
 			"checksumSHA1": "79A2m2Zs96hg/3xtcsOBzkpPAKM=",
 			"path": "github.com/urfave/cli",
 			"revision": "d70f47eeca3afd795160003bc6e28b001d60c67c",
@@ -93,6 +105,18 @@
 			"revisionTime": "2017-05-23T23:42:09Z"
 		},
 		{
+			"checksumSHA1": "UWjVYmoHlIfHzVIskELHiJQtMOI=",
+			"path": "golang.org/x/crypto/bcrypt",
+			"revision": "e7ba82683099cae71475961448ab8f903ea77c26",
+			"revisionTime": "2017-06-03T05:13:44Z"
+		},
+		{
+			"checksumSHA1": "JsJdKXhz87gWenMwBeejTOeNE7k=",
+			"path": "golang.org/x/crypto/blowfish",
+			"revision": "e7ba82683099cae71475961448ab8f903ea77c26",
+			"revisionTime": "2017-06-03T05:13:44Z"
+		},
+		{
 			"checksumSHA1": "1MGpGDQqnUoRpv7VEcQrXOBydXE=",
 			"path": "golang.org/x/crypto/pbkdf2",
 			"revision": "e1a4589e7d3ea14a3352255d04b6f1a418845e5e",
@@ -103,6 +127,12 @@
 			"path": "golang.org/x/crypto/ssh/terminal",
 			"revision": "e1a4589e7d3ea14a3352255d04b6f1a418845e5e",
 			"revisionTime": "2017-05-23T23:42:09Z"
+		},
+		{
+			"checksumSHA1": "Y+HGqEkYM15ir+J93MEaHdyFy0c=",
+			"path": "golang.org/x/net/context",
+			"revision": "59a0b19b5533c7977ddeb86b017bf507ed407b12",
+			"revisionTime": "2017-06-03T08:13:02Z"
 		},
 		{
 			"checksumSHA1": "PugQbLLjnbBSj+NOXRYBVRnLuuQ=",
