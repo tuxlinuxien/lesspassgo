@@ -29,6 +29,23 @@ func checkAuth(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
+func refreshPost(c echo.Context) error {
+	var i struct {
+		Token string `json:"token"`
+	}
+	if err := c.Bind(&i); err != nil {
+		log.Println(err)
+		return err
+	}
+	user, err := checkToken(i.Token)
+	if err != nil {
+		return c.String(http.StatusUnauthorized, err.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"token": signUser(user.ID),
+	})
+}
+
 func registerPost(c echo.Context) error {
 	var i struct {
 		Email    string `json:"email"`
@@ -179,6 +196,7 @@ func Start(dbPath string, port int) {
 	e.Use(middleware.AddTrailingSlash())
 	e.POST("/api/auth/register/", registerPost)
 	e.POST("/api/tokens/auth/", authPost)
+	e.POST("/api/tokens/refresh/", refreshPost)
 	e.POST("/api/passwords/", passwordsPost, checkAuth)
 	e.GET("/api/passwords/", passwordsGet, checkAuth)
 	e.PUT("/api/passwords/:id/", passwordsPut, checkAuth)
