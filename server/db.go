@@ -174,6 +174,30 @@ func GetPasswordByID(id string) (*PasswordModel, error) {
 	return p, nil
 }
 
+func GetPasswordsByUserID(userID string) []PasswordModel {
+	rows, err := conn.Query("SELECT id, user_id, login, site, uppercase, lowercase, symbols, numbers, counter, version, length FROM passwords WHERE user_id = $1", userID)
+	if err != nil {
+		return []PasswordModel{}
+	}
+	defer rows.Close()
+	var out = []PasswordModel{}
+	for rows.Next() {
+		p := PasswordModel{}
+		err = rows.Scan(&p.ID, &p.UserID, &p.Login, &p.Site, &p.Uppercase, &p.Lowercase, &p.Symbols, &p.Numbers, &p.Counter, &p.Version, &p.Length)
+		if err != nil {
+			continue
+		}
+		out = append(out, p)
+	}
+
+	return out
+}
+
+func DeletePasswordByIDAndUserID(id, userID string) error {
+	_, err := conn.Exec("DELETE FROM passwords WHERE id = $1 AND user_id = $2", id, userID)
+	return err
+}
+
 func openDB(path string) {
 	_conn, err := sql.Open("sqlite3", path)
 	if err != nil {

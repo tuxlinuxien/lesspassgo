@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -14,16 +13,18 @@ import (
 func checkAuth(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		token := c.Request().Header.Get("authorization")
-		fmt.Println(token)
 		if token == "" {
 			return c.String(http.StatusUnauthorized, "")
 		}
-		if !strings.HasPrefix("JWT ", token) {
-			fmt.Println(strings.HasPrefix("JWT ", token), "totot")
+		if !strings.HasPrefix(token, "JWT ") {
 			return c.String(http.StatusUnauthorized, "")
 		}
 		token = strings.Replace(token, "JWT ", "", 1)
-		fmt.Println(token)
+		user, err := checkToken(token)
+		if err != nil {
+			return c.String(http.StatusUnauthorized, err.Error())
+		}
+		c.Set("user", user)
 		return next(c)
 	}
 }
@@ -64,6 +65,8 @@ func authPost(c echo.Context) error {
 }
 
 func passwordsPost(c echo.Context) error {
+	userInterface := c.Get("user")
+	user := userInterface.(*UserModel)
 	var i struct {
 		Login     string `json:"login"`
 		Site      string `json:"site"`
@@ -79,7 +82,7 @@ func passwordsPost(c echo.Context) error {
 		log.Println(err)
 		return err
 	}
-	p, err := CreatePassword("toto", i.Login, i.Site, i.Uppercase, i.Lowercase, i.Symbols, i.Numbers, i.Counter, i.Version, i.Length)
+	p, err := CreatePassword(user.ID, i.Login, i.Site, i.Uppercase, i.Lowercase, i.Symbols, i.Numbers, i.Counter, i.Version, i.Length)
 	if err != nil {
 		return err
 	}
@@ -89,21 +92,40 @@ func passwordsPost(c echo.Context) error {
 func show(c echo.Context) error {
 	var i interface{}
 	c.Bind(&i)
-	fmt.Println(i)
 	return c.String(http.StatusOK, "")
 }
 
 func passwordsGet(c echo.Context) error {
+	userInterface := c.Get("user")
+	user := userInterface.(*UserModel)
 	var result struct {
-		Count   int         `json:"count"`
-		Next    interface{} `json:"next"`
-		Prev    interface{} `json:"prev"`
-		Results []PasswordModel
+		Count   int             `json:"count"`
+		Next    interface{}     `json:"next"`
+		Prev    interface{}     `json:"prev"`
+		Results []PasswordModel `json:"results"`
 	}
+	passwords := GetPasswordsByUserID(user.ID)
+	result.Count = len(passwords)
+	result.Results = passwords
 	return c.JSON(http.StatusOK, &result)
 }
 
+func passwordsDelete(c echo.Context) error {
+	userInterface := c.Get("user")
+	user := userInterface.(*UserModel)
+	passwordID := c.Param("id")
+	err := DeletePasswordByIDAndUserID(passwordID, user.ID)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, map[string]string{
+			"error": http.StatusText(http.StatusUnauthorized),
+		})
+	}
+	return c.String(http.StatusOK, "")
+}
+
 func passwordsPut(c echo.Context) error {
+	userInterface := c.Get("user")
+	user := userInterface.(*UserModel)
 	var i struct {
 		Login     string `json:"login"`
 		Site      string `json:"site"`
@@ -124,6 +146,11 @@ func passwordsPut(c echo.Context) error {
 	if err != nil {
 		log.Println(err)
 		return nil
+	}
+	if p.UserID != user.ID {
+		return c.JSON(http.StatusUnauthorized, map[string]string{
+			"error": http.StatusText(http.StatusUnauthorized),
+		})
 	}
 	p.Login = i.Login
 	p.Site = i.Site
@@ -155,5 +182,6 @@ func Start(dbPath string, port int) {
 	e.POST("/api/passwords/", passwordsPost, checkAuth)
 	e.GET("/api/passwords/", passwordsGet, checkAuth)
 	e.PUT("/api/passwords/:id/", passwordsPut, checkAuth)
+	e.DELETE("/api/passwords/:id/", passwordsDelete, checkAuth)
 	e.Start(":" + strconv.Itoa(port))
 }
