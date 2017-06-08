@@ -1,0 +1,12 @@
+[Unit]
+Description=LessPassGo server
+After=network.target
+
+[Service]
+ExecStart=/go/bin/lesspassgo-server
+Restart=always
+RestartSec=5
+WorkingDirectory=/home/ubuntu/lesspassgo/
+
+[Install]
+WantedBy=multi-user.target
