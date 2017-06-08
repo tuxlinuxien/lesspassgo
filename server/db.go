@@ -174,6 +174,7 @@ func GetPasswordByID(id string) (*PasswordModel, error) {
 	return p, nil
 }
 
+// GetPasswordsByUserID .
 func GetPasswordsByUserID(userID string) []PasswordModel {
 	rows, err := conn.Query("SELECT id, user_id, login, site, uppercase, lowercase, symbols, numbers, counter, version, length FROM passwords WHERE user_id = $1", userID)
 	if err != nil {
@@ -193,6 +194,7 @@ func GetPasswordsByUserID(userID string) []PasswordModel {
 	return out
 }
 
+// DeletePasswordByIDAndUserID .
 func DeletePasswordByIDAndUserID(id, userID string) error {
 	_, err := conn.Exec("DELETE FROM passwords WHERE id = $1 AND user_id = $2", id, userID)
 	return err

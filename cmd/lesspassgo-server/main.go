@@ -11,7 +11,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "lesspassgo-server"
 	app.Usage = "LessPass password server."
-	app.UsageText = "lesspassgo [options]"
+	app.UsageText = "lesspassgo-server [options]"
 	app.HideVersion = true
 	app.Author = "Yoann Cerda"
 	app.Email = "tuxlinuxien@gmail.com"
