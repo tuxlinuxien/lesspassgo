@@ -10,6 +10,10 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
+var (
+	disableReg = false
+)
+
 func checkAuth(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		token := c.Request().Header.Get("authorization")
@@ -47,6 +51,10 @@ func refreshPost(c echo.Context) error {
 }
 
 func registerPost(c echo.Context) error {
+	if disableReg {
+		return c.String(http.StatusForbidden, "registration is disabled")
+	}
+
 	var i struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
@@ -55,6 +63,7 @@ func registerPost(c echo.Context) error {
 		log.Println(err)
 		return err
 	}
+
 	if err := CreateUser(i.Email, i.Password); err != nil {
 		log.Println(err)
 		return err
@@ -186,7 +195,8 @@ func passwordsPut(c echo.Context) error {
 }
 
 // Start .
-func Start(dbPath string, port int) {
+func Start(dbPath string, port int, disableRegistration bool) {
+	disableReg = disableRegistration
 	openDB(dbPath)
 	createTable()
 	e := echo.New()

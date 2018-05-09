@@ -63,6 +63,7 @@ COMMANDS:
 GLOBAL OPTIONS:
    --db value              (default: "./user.db") [$DB_PATH]
    --port value, -p value  (default: 1314) [$PORT]
+   --disable-registration   [$DISABLE_REGISTRATION]
    --help, -h              show help
 ```
 

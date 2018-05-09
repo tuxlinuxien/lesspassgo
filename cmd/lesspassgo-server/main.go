@@ -27,10 +27,18 @@ func main() {
 			Value:  1314,
 			EnvVar: "PORT",
 		},
+		cli.BoolFlag{
+			Name:   "disable-registration",
+			EnvVar: "DISABLE_REGISTRATION",
+		},
 	}
 
 	app.Action = func(ctx *cli.Context) error {
-		server.Start(ctx.String("db"), ctx.Int("port"))
+		server.Start(
+			ctx.String("db"),
+			ctx.Int("port"),
+			ctx.Bool("disable-registration"),
+		)
 		return nil
 	}
 	app.Run(os.Args)

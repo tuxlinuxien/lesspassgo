@@ -30,8 +30,8 @@ const tables = `
         created TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
         modified TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
     );
-    CREATE UNIQUE INDEX passwords_unique ON passwords (user_id, login, site);
-    CREATE INDEX passwords_user_id ON passwords (user_id);
+    CREATE UNIQUE INDEX IF NOT EXISTS passwords_unique ON passwords (user_id, login, site);
+    CREATE INDEX IF NOT EXISTS passwords_user_id ON passwords (user_id);
 `
 
 var (
