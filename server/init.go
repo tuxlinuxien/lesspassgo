@@ -195,7 +195,7 @@ func passwordsPut(c echo.Context) error {
 }
 
 // Start .
-func Start(dbPath string, port int, disableRegistration bool) {
+func Start(dbPath, host string, port int, disableRegistration bool) {
 	disableReg = disableRegistration
 	openDB(dbPath)
 	createTable()
@@ -211,5 +211,8 @@ func Start(dbPath string, port int, disableRegistration bool) {
 	e.GET("/api/passwords/", passwordsGet, checkAuth)
 	e.PUT("/api/passwords/:id/", passwordsPut, checkAuth)
 	e.DELETE("/api/passwords/:id/", passwordsDelete, checkAuth)
-	e.Start(":" + strconv.Itoa(port))
+	err := e.Start(host + ":" + strconv.Itoa(port))
+	if err != nil {
+		log.Fatal(err)
+	}
 }

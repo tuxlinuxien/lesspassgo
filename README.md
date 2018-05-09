@@ -49,22 +49,22 @@ Users and passwords are stored into sqlite3 database.
 
 ```
 NAME:
-   lesspassgo-server - LessPass password server.
+    lesspassgo-server - LessPass password server.
 
 USAGE:
-   lesspassgo-server [options]
+    lesspassgo-server [options]
 
 AUTHOR:
-   Yoann Cerda <tuxlinuxien@gmail.com>
+    Yoann Cerda <tuxlinuxien@gmail.com>
 
 COMMANDS:
-     help, h  Shows a list of commands or help for one command
+    help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
-   --db value              (default: "./user.db") [$DB_PATH]
-   --port value, -p value  (default: 1314) [$PORT]
-   --disable-registration   [$DISABLE_REGISTRATION]
-   --help, -h              show help
+    --db value              (default: "./user.db") [$DB_PATH]
+    --host value            (default: "0.0.0.0") [$HOST]
+    --port value, -p value  (default: 1314) [$PORT]
+    --disable-registration  [$DISABLE_REGISTRATION]
 ```
 
 ## License
