@@ -20,10 +20,13 @@ func checkAuth(next echo.HandlerFunc) echo.HandlerFunc {
 		if token == "" {
 			return c.String(http.StatusUnauthorized, "")
 		}
-		if !strings.HasPrefix(token, "JWT ") {
+		if strings.HasPrefix(token, "JWT ") {
+			token = strings.Replace(token, "JWT ", "", 1)
+		} else if strings.HasPrefix(token, "Bearer ") {
+			token = strings.Replace(token, "Bearer ", "", 1)
+		} else {
 			return c.String(http.StatusUnauthorized, "")
 		}
-		token = strings.Replace(token, "JWT ", "", 1)
 		user, err := checkToken(token)
 		if err != nil {
 			return c.String(http.StatusUnauthorized, err.Error())
@@ -31,6 +34,23 @@ func checkAuth(next echo.HandlerFunc) echo.HandlerFunc {
 		c.Set("user", user)
 		return next(c)
 	}
+}
+
+func refreshBearerPost(c echo.Context) error {
+	var i struct {
+		Token string `json:"access"`
+	}
+	if err := c.Bind(&i); err != nil {
+		log.Println(err)
+		return err
+	}
+	user, err := checkToken(i.Token)
+	if err != nil {
+		return c.String(http.StatusUnauthorized, err.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"access": signUser(user.ID),
+	})
 }
 
 func refreshPost(c echo.Context) error {
@@ -69,6 +89,25 @@ func registerPost(c echo.Context) error {
 		return err
 	}
 	return c.String(http.StatusOK, "")
+}
+
+func authBearerPost(c echo.Context) error {
+	var i struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	if err := c.Bind(&i); err != nil {
+		log.Println(err)
+		return err
+	}
+	user, err := AuthUser(i.Email, i.Password)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"access": signUser(user.ID),
+	})
 }
 
 func authPost(c echo.Context) error {
@@ -205,6 +244,9 @@ func Start(dbPath, host string, port int, disableRegistration bool) {
 	e.Use(middleware.CORS())
 	e.Use(middleware.AddTrailingSlash())
 	e.POST("/api/auth/register/", registerPost)
+	e.POST("/api/auth/users/", registerPost)
+	e.POST("/api/auth/jwt/create/", authBearerPost)
+	e.POST("/api/auth/jwt/refresh/", refreshBearerPost)
 	e.POST("/api/tokens/auth/", authPost)
 	e.POST("/api/tokens/refresh/", refreshPost)
 	e.POST("/api/passwords/", passwordsPost, checkAuth)
